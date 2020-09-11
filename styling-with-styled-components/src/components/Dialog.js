@@ -1,6 +1,42 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import styled, { keyframes } from "styled-components";
 import Button from "./Button";
+
+const fadeIn = keyframes`
+  from{
+    opacity : 0;
+  }
+  to {
+    opacity : 1;
+  }
+`;
+
+const fadeOut = keyframes`
+  from{
+    opacity : 1;
+  }
+  to {
+    opacity : 0;
+  }
+`;
+
+const slideUp = keyframes`
+  from {
+    transform : translateY(100%);
+  }
+  to {
+    transform : translateY(0);
+  }
+`;
+
+const slideDown = keyframes`
+  from {
+    transform : translateY(0);
+  }
+  to {
+    transform : translateY(100%);
+  }
+`;
 
 const DarkBackground = styled.div`
   position: fixed;
@@ -12,6 +48,11 @@ const DarkBackground = styled.div`
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.8);
+
+  animation-duration: 0.25s;
+  animation-timing-function: ease-out;
+  animation-name: ${(props) => (props.disappear ? fadeOut : fadeIn)};
+  animation-fill-mode: forwards;
 `;
 
 const DialogBlock = styled.div`
@@ -20,7 +61,10 @@ const DialogBlock = styled.div`
   background: white;
   border-radius: 2px;
 
-  h3 {
+  animation-duration: 0.25s;
+  animation-timing-function: ease-out;
+  animation-name: ${(props) => (props.disappear ? slideDown : slideUp)};
+  animation-fill-mode: forwards h3 {
     margin: 0;
     font-size: 1.5rem;
   }
@@ -52,10 +96,23 @@ function Dialog({
   visible,
   ...rest
 }) {
-  if (!visible) return null;
+  const [animate, setAnimate] = useState(false);
+  const [localVisible, setLocalVisible] = useState(visible);
+
+  useEffect(() => {
+    if (localVisible && !visible) {
+      setAnimate(true);
+      setTimeout(() => {
+        setAnimate(false);
+      }, 250);
+    }
+    setLocalVisible(visible);
+  }, [visible, localVisible]);
+
+  if (!localVisible && !animate) return null;
   return (
-    <DarkBackground>
-      <DialogBlock>
+    <DarkBackground disappear={!visible}>
+      <DialogBlock disappear={!visible}>
         <h3>{title}</h3>
         <p>{children}</p>
         <ButtonGroup>

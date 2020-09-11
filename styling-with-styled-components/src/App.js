@@ -29,11 +29,11 @@ function App() {
   };
 
   const onConfirm = () => {
-    console.log("정말 삭제!?");
+    setDialog(false);
   };
 
   const onCancel = () => {
-    console.log("취소!?");
+    setDialog(false);
   };
 
   return (
