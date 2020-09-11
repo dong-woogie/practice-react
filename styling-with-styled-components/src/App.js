@@ -45,6 +45,23 @@ function App() {
       >
         <AppBlock>
           <div className="buttons">
+            <Button color="blue" size="large">
+              Button
+            </Button>
+            <Button color="blue" size="medium">
+              Button
+            </Button>
+            <Button color="blue" size="small">
+              Button
+            </Button>
+          </div>
+          <div className="buttons">
+            <Button color="blue" size="large" onClick={onClick} fullWidth>
+              Button
+            </Button>
+            <Button color="blue" size="large" onClick={onClick} fullWidth>
+              Button
+            </Button>
             <Button color="blue" size="large" onClick={onClick} fullWidth>
               Button
             </Button>

@@ -66,7 +66,7 @@ const fullWidthStyle = css`
     css`
       width: 100%;
       justify-content: center;
-      & + & {
+      & + button {
         margin-left: 0;
         margin-top: 1rem;
       }
@@ -88,7 +88,7 @@ const StyledButton = styled.button`
 
   height: 2.25rem;
 
-  & + & {
+  & + button {
     margin-left: 1rem;
   }
 
