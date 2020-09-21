@@ -5,7 +5,6 @@ export const createPromiseThunk = (type, promiseCreator) => {
     dispatch({ type });
     try {
       const payload = await promiseCreator(params);
-      console.log(payload);
       dispatch({
         type: SUCCESS,
         payload,
@@ -16,32 +15,6 @@ export const createPromiseThunk = (type, promiseCreator) => {
         payload: e,
         error: true,
       });
-    }
-  };
-};
-
-export const handleAsyncActions = (type, key) => {
-  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
-
-  return (state, action) => {
-    switch (action.type) {
-      case type:
-        return {
-          ...state,
-          [key]: reducerUtils.loading(),
-        };
-      case SUCCESS:
-        return {
-          ...state,
-          [key]: reducerUtils.success(action.payload),
-        };
-      case ERROR:
-        return {
-          ...state,
-          [key]: reducerUtils.error(action.payload),
-        };
-      default:
-        return state;
     }
   };
 };
@@ -67,4 +40,30 @@ export const reducerUtils = {
     data: null,
     loading: false,
   }),
+};
+
+export const handleAsyncActions = (type, key, keepData) => {
+  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
+
+  return (state, action) => {
+    switch (action.type) {
+      case type:
+        return {
+          ...state,
+          [key]: reducerUtils.loading(keepData ? state[key].data : null),
+        };
+      case SUCCESS:
+        return {
+          ...state,
+          [key]: reducerUtils.success(action.payload),
+        };
+      case ERROR:
+        return {
+          ...state,
+          [key]: reducerUtils.error(action.payload),
+        };
+      default:
+        return state;
+    }
+  };
 };

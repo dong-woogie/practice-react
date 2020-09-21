@@ -13,7 +13,7 @@ const GET_POST = "GET_POST";
 const GET_POST_SUCCESS = "GET_POST_SUCCESS";
 const GET_POST_ERROR = "GET_POST_ERROR";
 
-const getPostsReducer = handleAsyncActions(GET_POSTS, "posts");
+const getPostsReducer = handleAsyncActions(GET_POSTS, "posts", true);
 const getPostReducer = handleAsyncActions(GET_POST, "post");
 
 export const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts);
