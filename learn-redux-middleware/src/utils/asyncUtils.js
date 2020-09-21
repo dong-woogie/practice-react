@@ -19,6 +19,36 @@ export const createPromiseThunk = (type, promiseCreator) => {
   };
 };
 
+const defaultIdSelector = (param) => param;
+
+export const createPromiseThunkById = (
+  type,
+  promiseCreator,
+  isSelector = defaultIdSelector
+) => {
+  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
+
+  return (params) => async (dispatch) => {
+    const id = isSelector(params);
+    dispatch({ type, meta: id });
+    try {
+      const payload = await promiseCreator(params);
+      dispatch({
+        type: SUCCESS,
+        payload,
+        meta: id,
+      });
+    } catch (e) {
+      dispatch({
+        type: ERROR,
+        payload: e,
+        error: true,
+        meta: id,
+      });
+    }
+  };
+};
+
 export const reducerUtils = {
   initial: (data = null) => ({
     loading: false,

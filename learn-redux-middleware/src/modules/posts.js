@@ -3,6 +3,7 @@ import {
   reducerUtils,
   handleAsyncActions,
   createPromiseThunk,
+  createPromiseThunkById,
 } from "../utils/asyncUtils";
 
 const GET_POSTS = "GET_POSTS";
@@ -14,26 +15,7 @@ const GET_POST_SUCCESS = "GET_POST_SUCCESS";
 const GET_POST_ERROR = "GET_POST_ERROR";
 
 export const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts);
-// export const getPost = createPromiseThunk(GET_POST, postsAPI.getPostById);
-
-export const getPost = (id) => async (dispatch) => {
-  dispatch({ type: GET_POST, meta: id });
-  try {
-    const payload = await postsAPI.getPostById(id);
-    dispatch({
-      type: GET_POST_SUCCESS,
-      meta: id,
-      payload,
-    });
-  } catch (e) {
-    dispatch({
-      type: GET_POST_ERROR,
-      meta: id,
-      error: true,
-      payload: e,
-    });
-  }
-};
+export const getPost = createPromiseThunkById(GET_POST, postsAPI.getPostById);
 
 const getPostsReducer = handleAsyncActions(GET_POSTS, "posts", true);
 // const getPostReducer = handleAsyncActions(GET_POST, "post");
