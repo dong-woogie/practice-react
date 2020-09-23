@@ -17,6 +17,9 @@ const GET_POST_ERROR = "GET_POST_ERROR";
 
 export const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts);
 export const getPost = createPromiseThunkById(GET_POST, postsAPI.getPostById);
+export const goToHome = () => (dispatch, getState, { history }) => {
+  history.push("/");
+};
 
 const getPostsReducer = handleAsyncActions(GET_POSTS, "posts", true);
 const getPostReducer = handleAsyncActionsById(GET_POST, "post", true);
