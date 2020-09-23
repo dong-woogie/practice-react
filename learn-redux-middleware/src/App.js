@@ -5,12 +5,12 @@ import PostPage from "./pages/PostPage";
 import Counter from "./containers/CounterContainer";
 function App() {
   return (
-    <Counter />
+    // <Counter />
 
-    // <Switch>
-    //   <Route path="/" component={HomePage} exact />
-    //   <Route path="/:id" component={PostPage} />
-    // </Switch>
+    <Switch>
+      <Route path="/" component={HomePage} exact />
+      <Route path="/:id" component={PostPage} />
+    </Switch>
   );
 }
 
