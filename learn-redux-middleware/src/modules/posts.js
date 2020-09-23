@@ -3,8 +3,8 @@ import {
   reducerUtils,
   handleAsyncActions,
   handleAsyncActionsById,
-  createPromiseThunk,
-  createPromiseThunkById,
+  createPromiseSaga,
+  createPromiseSagaById,
 } from "../utils/asyncUtils";
 import { call, put, takeLatest } from "redux-saga/effects";
 
@@ -25,39 +25,9 @@ export const goToHome = () => (dispatch, getState, { history }) => {
 export const getPosts = () => ({ type: GET_POSTS });
 export const getPost = (id) => ({ type: GET_POST, meta: id, payload: id });
 
-function* getPostsSaga() {
-  try {
-    const posts = yield call(postsAPI.getPosts);
-    yield put({
-      type: GET_POSTS_SUCCESS,
-      payload: posts,
-    });
-  } catch (e) {
-    yield put({
-      type: GET_POSTS_ERROR,
-      payload: e,
-      error: true,
-    });
-  }
-}
+const getPostsSaga = createPromiseSaga(GET_POSTS, postsAPI.getPosts);
+const getPostSaga = createPromiseSagaById(GET_POST, postsAPI.getPostById);
 
-function* getPostSaga(action) {
-  const id = action.payload;
-  try {
-    const post = yield postsAPI.getPostById(id);
-    yield put({
-      type: GET_POST_SUCCESS,
-      payload: post,
-      meta: id,
-    });
-  } catch (e) {
-    yield put({
-      type: GET_POST_ERROR,
-      payload: e,
-      error: true,
-      meta: id,
-    });
-  }
 }
 
 export function* postsSaga() {
